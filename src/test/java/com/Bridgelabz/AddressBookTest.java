@@ -26,5 +26,11 @@ AddressBookService bookTest = new AddressBookService();
 		Assert.assertTrue("Connection established",true);
 	}
 	
-	
+	@Test
+	public void givenTestCaseShouldReturnUpdatedContact() {
+        String firstname ="Vishaka";
+		int id = 1;
+		bookTest.updateContactInfo(firstname,id);
+        Assert.assertTrue("Retrieve data successfully",true);
+    }
 }

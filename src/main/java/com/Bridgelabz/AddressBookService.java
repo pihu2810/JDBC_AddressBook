@@ -2,6 +2,7 @@ package com.Bridgelabz;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,7 +17,7 @@ public class AddressBookService
 			try {
 				String JDBCURL = "jdbc:mysql://localhost:3306/addressbook_service";
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				connection = DriverManager.getConnection(JDBCURL, "root", "root");
+				connection = DriverManager.getConnection(JDBCURL, "123456", "123456");
 			} catch (ClassNotFoundException | SQLException e) {
 				System.out.println("Driver not loaded");
 			}
@@ -49,5 +50,18 @@ public class AddressBookService
 			System.out.println(contactInfo);
 			return contactInfo;
 		}
-
+		public void updateContactInfo(String firstname, int id) {
+			try (Connection connection = getConnection()) {
+				String query = "update addressbook set firstname = ? where id = ?";
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1, firstname);
+				preparedStatement.setInt(2, id);
+				int result = preparedStatement.executeUpdate();
+				if (result >= 1) {
+					System.out.println("contact updated");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 }
