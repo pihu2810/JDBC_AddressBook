@@ -39,4 +39,15 @@ AddressBookService bookTest = new AddressBookService();
         bookTest.retrieveContact();
         Assert.assertTrue("Retrieve data successfully",true);
     }
+	@Test
+	public void givenTestCaseShouldReturnDataByDateRange() {
+	bookTest.retrieveContactByDateRange();
+	Assert.assertTrue("Data Retrieved",true);
+	}
+	
+	@Test
+	public void givenTestCaseShouldReturnCountOfCity() {
+		bookTest.getCountByCity();
+		Assert.assertTrue("city counted",true);		
+	}
 }

@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService 
 { 
@@ -91,4 +93,23 @@ public class AddressBookService
 			System.out.println(contactInfo);
 			return contactInfo;
 		}
+		// UC_19 retrieve contact by city or state
+		public Map<String, Integer> getCountByCity() {
+			Map<String, Integer> countByCity = new HashMap<>();
+			try (Connection connection = getConnection()) {
+				Statement statement = connection.createStatement();
+				String query = "select city,count(*) as count from addressbook group by city";
+				ResultSet resultset = statement.executeQuery(query);
+				while (resultset.next()) {
+					String city = String.valueOf(resultset.getString("city"));
+					Integer count1 = Integer.valueOf(resultset.getString("count"));
+					countByCity.put(city, count1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println(countByCity);
+			return countByCity;
+		}
+		
 }
