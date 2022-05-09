@@ -17,7 +17,7 @@ public class AddressBookService
 			try {
 				String JDBCURL = "jdbc:mysql://localhost:3306/addressbook_service";
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				connection = DriverManager.getConnection(JDBCURL, "123456", "123456");
+				connection = DriverManager.getConnection(JDBCURL, "root", "123456");
 			} catch (ClassNotFoundException | SQLException e) {
 				System.out.println("Driver not loaded");
 			}
@@ -63,5 +63,32 @@ public class AddressBookService
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		// UC_18 retrieve contact of particular date period
+		public List<ContactInfo> retrieveContactByDateRange() {
+			List<ContactInfo> contactInfo = new ArrayList<>();
+			try (Connection connection = getConnection()) {
+				Statement statement = connection.createStatement();
+				String sqlQuery = "select * from addressbook where date_added between '2022-01-01' and date(now())";
+				ResultSet resultset = statement.executeQuery(sqlQuery);
+				while (resultset.next()) {
+					ContactInfo info = new ContactInfo();
+					info.setId(resultset.getInt("id"));
+					info.setFirstName(resultset.getString("firstname"));
+					info.setLastName(resultset.getString("lastname"));
+					info.setPhoneNumber(resultset.getString("phonenumber"));
+					info.setEmail(resultset.getString("email"));
+					info.setAddress(resultset.getString("address"));
+					info.setCity(resultset.getString("city"));
+					info.setState(resultset.getString("state"));
+					info.setZip(resultset.getInt("zip"));
+					info.setDate_added(resultset.getDate("date_added"));
+					contactInfo.add(info);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println(contactInfo);
+			return contactInfo;
 		}
 }

@@ -33,4 +33,10 @@ AddressBookService bookTest = new AddressBookService();
 		bookTest.updateContactInfo(firstname,id);
         Assert.assertTrue("Retrieve data successfully",true);
     }
+
+	@Test
+    public void givenTestCaseShouldReturn_AllData() {
+        bookTest.retrieveContact();
+        Assert.assertTrue("Retrieve data successfully",true);
+    }
 }
