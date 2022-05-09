@@ -50,4 +50,15 @@ AddressBookService bookTest = new AddressBookService();
 		bookTest.getCountByCity();
 		Assert.assertTrue("city counted",true);		
 	}
+	@Test
+	public void givenTestCaseShouldReturnCountOfState() {
+		bookTest.getCountByState();
+		Assert.assertTrue("state counted",true);	
+	}
+	
+	@Test
+	public void givenTestCaseShouldAddNewContact() {
+		bookTest.insertNewContact();
+		Assert.assertTrue("data added",true);	
+	}
 }

@@ -111,5 +111,50 @@ public class AddressBookService
 			System.out.println(countByCity);
 			return countByCity;
 		}
+		// UC_19 count by state
+		public Map<String, Integer> getCountByState() {
+			Map<String, Integer> countByState = new HashMap<>();
+			try (Connection connection = getConnection()) {
+				String query = "select state,count(*) as count from addressbook group by state";
+				Statement statement = connection.createStatement();
+				ResultSet resultset = statement.executeQuery(query);
+				while (resultset.next()) {
+					String state = String.valueOf(resultset.getString("state"));
+					Integer count = Integer.valueOf(resultset.getString("count"));
+					countByState.put(state, count);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			System.out.println(countByState);
+			return countByState;
+		}
+
+		// UC_20 insert contact
+		public void insertNewContact() {
+			Connection connection = null;
+			connection = getConnection();
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+
+			try (Statement statement = connection.createStatement()) {
+				String sql = format(
+						"insert into addressbook(firstname,lastname,address,city,state,zip,phonenumber,email,ab_name,ab_type,date_added) "
+								+ "values ('%s','%s','%s','%s','%s','%d','%s','%s','%s','%s','%s')",
+						"test2", "demo", "NY", "Mumbai", "MH", 45677, "98877769", "test2@gmail.com", "AddressBook1",
+						"Family", "2022-01-12");
+				int rowAffected = statement.executeUpdate(sql);
+				if (rowAffected >= 1) {
+					System.out.println("contact added");
+				}
+			} catch (SQLException e) {
+				System.out.println("exception" + e.getMessage());
+			}
+		}
+
+		
 		
 }
